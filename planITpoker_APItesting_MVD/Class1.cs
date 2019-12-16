@@ -8,20 +8,27 @@ namespace planITpoker_APItesting_MVD
     public class User
     {
         public string Name { get; set; }
+        public string user { get; set; }
     }
     public interface IplanITpokerAPI
     {
-        [Post("/api/authentication/{user}")]
-        Task<User> PostUserName(string user);
+        [Post("/api/authentication")]
+        [Headers("name=John")]
+        Task CreateUser([Body(BodySerializationMethod.UrlEncoded)] User user, [Header("name")] string name);
     }
     public class UnitTest1
     {        
         [Fact]
         public async Task QuickPlayLogin()
         {
-            var planITAPI = RestService.For<IplanITpokerAPI>("https://www.planitpoker.com/");
-            var quick = await planITAPI.PostUserName("John");
-            Assert.Equal("name=John", quick.Name);
+            var _user = new User();
+            var _name = new User();
+            var planITAPI = RestService.For<IplanITpokerAPI>("https://www.planitpoker.com/",
+                new RefitSettings {
+                    ContentSerializer = new XmlContentSerializer()
+                 });
+            var quick = await planITAPI.CreateUser(_user, "John");
+            //Assert.Equal("John", quick.Name);
         }
     }
 
