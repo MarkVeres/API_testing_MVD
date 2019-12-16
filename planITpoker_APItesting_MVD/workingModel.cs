@@ -17,14 +17,14 @@ namespace XUnitTestProject2
         [Get("/users/{user}")]
         Task<User> GetUser(string user);
     }
-    public class UnitTest1
-    {
-        [Fact]
-        public async Task Test1()
-        {
-            var gitHubApi = RestService.For<IGitHubApi>("https://api.github.com");
-            var octocat = await gitHubApi.GetUser("octocat");
-            Assert.Equal("The Octocat", octocat.Name);
-        }
-    }
+    //public class UnitTest1
+    //{
+    //    [Fact]
+    //    public async Task Test1()
+    //    {
+    //        var gitHubApi = RestService.For<IGitHubApi>("https://api.github.com");
+    //        var octocat = await gitHubApi.GetUser("octocat");
+    //        Assert.Equal("The Octocat", octocat.Name);
+    //    }
+    //}
 }
