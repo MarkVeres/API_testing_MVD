@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace restSharp_Try
 {
-    public class RestSharpHelper<T>
+    public class RestSharpHelper
     {
         public RestClient client;
         public RestRequest request;
@@ -20,7 +20,7 @@ namespace restSharp_Try
             return client;
         }
 
-        public RestRequest CreatePostRequest(string jsonString)
+        public RestRequest CreatePostRequest()
         {
             request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
@@ -34,7 +34,7 @@ namespace restSharp_Try
             request.AddHeader("Accept", "*/*");
             request.AddHeader("User-Agent", "PostmanRuntime/7.20.1");
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddParameter("undefined", jsonString, ParameterType.RequestBody);
+            request.AddParameter("undefined", "name=Jack", ParameterType.RequestBody);
             return request;
         }
 

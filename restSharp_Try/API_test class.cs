@@ -11,6 +11,11 @@ namespace restSharp_Try
         [Fact]
         public void QuickPlayLogin()
         {
+            //RestSharpHelper restApi = new RestSharpHelper();
+            //var client = restApi.SetUrl("/api/authentication/anonymous");
+            //var request = restApi.CreatePostRequest();
+            //IRestResponse response = client.Execute(request);
+
             var client = new RestClient("https://www.planitpoker.com/api/authentication/anonymous");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
@@ -29,9 +34,6 @@ namespace restSharp_Try
 
             int length = response.Content.Length;
             Assert.Equal(2, length);
-
-            //string s = request.Parameters.Contains.ToString();
-            //Assert.Contains("Jack", s);
         }
     }
 }
