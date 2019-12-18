@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace restSharp_Try
 {
-    public class RestSharpHelper
+    public class RestSharpHelper<T>
     {
         public RestClient client;
         public RestRequest request;

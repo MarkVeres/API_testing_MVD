@@ -11,7 +11,7 @@ namespace restSharp_Try
         [Fact]
         public void QuickPlayLogin()
         {
-            RestSharpHelper restApi = new RestSharpHelper();
+            RestSharpHelper<User> restApi = new RestSharpHelper<User>();
             var client = restApi.SetUrl("/api/authentication/anonymous");
             var request = restApi.CreatePostRequest();
             var response = restApi.GetResponse(client, request);
