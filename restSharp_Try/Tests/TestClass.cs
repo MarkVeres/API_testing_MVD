@@ -9,7 +9,7 @@ namespace restSharp_Try
     public class TestClass
     {
         [Fact]
-        public void GameRoomTest()
+        public void QuickPlayLoginGameRoom()
         {
             var client = new PlanitPockerClient();
             var player = client.QuickPlayLogin("John");
