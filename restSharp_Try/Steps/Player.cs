@@ -7,7 +7,7 @@ namespace restSharp_Try
 {
     public class Player
     {
-        public readonly string cookie;
+        private readonly string cookie;
         private readonly RestClient client;
 
         public Player(string cookie, RestClient client)

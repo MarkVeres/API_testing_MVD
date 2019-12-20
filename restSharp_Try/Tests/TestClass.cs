@@ -18,32 +18,41 @@ namespace restSharp_Try
         }
 
         [Fact]
-        public void GameRoomStory()
+        public void CreateStory()
         {
             var client = new PlanitPockerClient();
             var player = client.QuickPlayLogin("John");
             var game = player.CreateRoom("Test Room");
-            string cookie = player.cookie;
             game.CreateStory("Test Story");
-            game.CreateStory("test story ggg");
-            var story = game.GetStoryDetails().stories[1];
-            Assert.Equal("test story ggg", story.title);
             Assert.Equal("Test Story", game.GetStoryDetails().stories[0].title);
         }
 
         [Fact]
-        public void MultipleStoriesTitles()
+        public void CreateMultipleStories()
         {
             var client = new PlanitPockerClient();
             var player = client.QuickPlayLogin("John");
             var game = player.CreateRoom("Test Room");
-            string cookie = player.cookie;
             game.CreateStory("Test Story");
             game.CreateStory("Test Story 2");
             game.CreateStory("Third and Final Test Story");
+            //Asserts the title of the stories, from the "stories" array
             Assert.Equal("Test Story", game.GetStoryDetails().stories[0].title);
             Assert.Equal("Test Story 2", game.GetStoryDetails().stories[1].title);
             Assert.Equal("Third and Final Test Story", game.GetStoryDetails().stories[2].title);
+        }
+
+        [Fact]
+        public void UserVoting()
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            game.CreateStory("Test Story");
+            game.StartGame();
+            game.Vote();
+            Assert.Equal("John", game.GetVoteDetails().name);
+            Assert.True(game.GetVoteDetails().voted);
         }
     }
 }
