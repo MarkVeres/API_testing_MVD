@@ -1,4 +1,5 @@
 ﻿using RestSharp;
+using restSharp_Try.Steps;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -41,7 +42,7 @@ namespace restSharp_Try
             var content = response.Content;
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameRoom>(content);
 
-            return new GameRoom(deserializeObject.gameId, deserializeObject.gameCode, client, cookie);
+            return new GameRoom(deserializeObject.GameId, deserializeObject.GameCode, client, cookie);
         }
     }
 }
