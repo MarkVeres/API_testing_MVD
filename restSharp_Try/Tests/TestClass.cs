@@ -60,19 +60,11 @@ namespace restSharp_Try
         [Fact]
         public void UserVoting()
         {
-            //bad request at Vote method
-            //something wrong with request order
-            //need to do more requests to set the current story and check if players are stated
-            //follow request chain
-
             var client = new PlanitPockerClient();
             var player = client.QuickPlayLogin("John");
             var game = player.CreateRoom("Test Room");
             game.CreateStory("Test Story");
             game.StartGame();
-            game.GetStory();
-            //game.GetCurrentStory();
-            //game.GetCurrentStoryState();
             game.Vote();
             Assert.Equal("John", game.GetVoteInfo().players[0].name);
             Assert.True(game.GetVoteInfo().players[0].voted);

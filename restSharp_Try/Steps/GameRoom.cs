@@ -83,7 +83,7 @@ namespace restSharp_Try
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/games/getPlayersAndState", Method.POST);
+            var request = new RestRequest("/stories/next/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -112,56 +112,7 @@ namespace restSharp_Try
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(content);
 
             return deserializeObject;
-        }
-        public GameRoom GetStory()
-        {
-            var body = $"gameId={GameId}&";
-
-            var request = new RestRequest("/stories/get/", Method.POST);
-
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
-
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
-
-            return new GameRoom(GameId, GameCode, client, cookie);
-        }
-
-        public GameRoom GetCurrentStory()
-        {
-            var body = $"gameId={GameId}&";
-
-            var request = new RestRequest("/games/getCurrentStory/", Method.POST);
-
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
-
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
-
-            return new GameRoom(GameId, GameCode, client, cookie);
-        }
-        public GameRoom GetCurrentStoryState()
-        {
-            var body = $"gameId={GameId}&";
-
-            var request = new RestRequest("/games/getCurrentStoryState/", Method.POST);
-
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
-
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
-
-            return new GameRoom(GameId, GameCode, client, cookie);
-        }
+        }        
 
         public GameRoom Vote()
         {

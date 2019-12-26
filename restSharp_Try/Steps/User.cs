@@ -18,7 +18,7 @@ namespace restSharp_Try.Steps
         //this is the Room title
         public string title { get; set; }
 
-        //this is the Game Start status
+        //this is the Vote Start status
         public string votingStart { get; set; }
 
     }
