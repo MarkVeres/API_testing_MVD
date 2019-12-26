@@ -21,5 +21,7 @@ namespace restSharp_Try.Steps
         //this is the Vote Start status
         public string votingStart { get; set; }
 
+        //this is for Finish voting
+        public bool closed { get; set; }
     }
 }

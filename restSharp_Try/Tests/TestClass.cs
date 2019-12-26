@@ -69,5 +69,46 @@ namespace restSharp_Try
             Assert.Equal("John", game.GetVoteInfo().players[0].name);
             Assert.True(game.GetVoteInfo().players[0].voted);
         }
+
+        [Fact]
+        public void FinishVoting()
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            game.CreateStory("Test Story");
+            game.StartGame();
+            game.Vote();
+            game.FinishVoting();
+            Assert.True(game.GetPlayersAndStateInfo().closed);           
+        }
+        [Fact]
+        public void NextStory()
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            game.CreateStory("First Story");
+            game.CreateStory("Second Story");
+            game.StartGame();
+            game.Vote();
+            game.FinishVoting();
+            game.StartGame();
+            Assert.Equal("Second Story", game.GetCurrentStory().Title);
+        }
+
+        [Fact]
+        public void SkipStory()
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            game.CreateStory("First Story");
+            game.CreateStory("Second Story");
+            game.StartGame();
+            game.SkipStory();
+            game.StartGame();
+            Assert.Equal("Second Story", game.GetCurrentStory().Title);
+        }
     }
 }
