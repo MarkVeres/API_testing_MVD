@@ -1,27 +1,22 @@
 ﻿using RestSharp;
-using restSharp_Try.Steps;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using Xunit;
 
-namespace restSharp_Try
-{   
-    public class GameRoom
+namespace restSharp_Try.Steps
+{
+    public class GetInfo
     {
-        public int GameId { get; set; }
-        public string GameCode { get; set; }
+        public string cookie;
+        public int GameId;
         private RestClient client;
-        private string cookie;
-
-        public GameRoom(int gameId, string gameCode, RestClient client, string cookie)
+        public GetInfo(string cookie, int gameId, RestClient client)
         {
-            this.GameId = gameId;
-            this.GameCode = gameCode;
-            this.client = client;
             this.cookie = cookie;
+            this.GameId = gameId;
+            this.client = client;
         }
+
         public User GetRoomInfo()
         {
             var body = $"gameId={GameId}&";
@@ -40,99 +35,99 @@ namespace restSharp_Try
 
             return deserializeObject;
         }
-        public GetInfo CreateStory(string storyName)
-        {
-            var body = $"gameId={GameId}&" +
-                $"name={storyName}";
 
-            var request = new RestRequest("/stories/create/", Method.POST);
+        public CurrentStory GetCurrentStory()    //used for the NextStory Test Assert
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/games/getCurrentStory/", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
             var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<CurrentStory>(content);
 
-            return new GetInfo(cookie, GameId, client);
+            return deserializeObject;
+        }
+        public Story GetStoryInfo()
+        {
+            var body = $"gameId={GameId}&" +
+                $"page=1&" +
+                $"skip=0&" +
+                $"perPage=25&" +
+                $"status=0&";
+
+            var request = new RestRequest("/stories/get/", Method.POST);
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Story>(content);
+
+            return deserializeObject;
         }
 
-        public GetInfo StartGame()    //this is also used for Next Story function as it has the same URL
+        public User GetStartGameInfo()
         {
             var body = $"gameId={GameId}&";
 
             var request = new RestRequest("/stories/next/", Method.POST);
+
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
+
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
             var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(content);
 
-            return new GetInfo(cookie, GameId, client);
+            return deserializeObject;
         }
-        
-        public GetInfo SkipStory()
+
+        public User GetVoteInfo()
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/stories/skip/", Method.POST);
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
-
-            return new GetInfo(cookie, GameId, client);
-        }
-
-        public GetInfo Vote()
-        {
-            var body = $"gameId={GameId}&" +
-                $"vote=2";
-
-            var request = new RestRequest("/stories/vote/", Method.POST);
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
-
-            return new GetInfo(cookie, GameId, client);
-        }
-
-        public GetInfo FinishVoting()
-        {
-            var body = $"gameId={GameId}&" +
-                $"estimate=3";
-
-            var request = new RestRequest("/stories/finish/", Method.POST);
+            var request = new RestRequest("/games/gameStoryVoteEvent", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
+
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
             var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(content);
 
-            return new GetInfo(cookie, GameId, client);
+            return deserializeObject;
         }
 
-        public GetInfo ResetTimer()
+        public User GetPlayersAndStateInfo()
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/games/resetTimer/", Method.POST);
+            var request = new RestRequest("/games/getPlayersAndState/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
+
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
             var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(content);
 
-            return new GetInfo(cookie, GameId, client);
+            return deserializeObject;
         }
     }
 }

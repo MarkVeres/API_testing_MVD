@@ -4,12 +4,9 @@ using System.Text;
 
 namespace restSharp_Try
 {    
-    public class Story
+    public class Story  //this one is for story creation since story creation and story info are sepparate APIs
     {
-        //this is the story list
         public Story[] Stories { get; set; }
-
-        //this is the individual name of each story
-        public string Title { get; set; }
+        public string title { get; set; }
     }    
 }
