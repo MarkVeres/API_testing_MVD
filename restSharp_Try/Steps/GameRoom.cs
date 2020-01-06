@@ -22,7 +22,7 @@ namespace restSharp_Try
             this.client = client;
             this.cookie = cookie;
         }
-        public User GetRoomInfo()
+        public Room GetRoomInfo()
         {
             var body = $"gameId={GameId}&";
 
@@ -36,7 +36,7 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
             var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(content);
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Room>(content);
 
             return deserializeObject;
         }
@@ -124,6 +124,38 @@ namespace restSharp_Try
             var body = $"gameId={GameId}&";
 
             var request = new RestRequest("/games/resetTimer/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            return new GetInfo(cookie, GameId, client);
+        }
+
+        public GetInfo ClearVotes()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/games/resetCurrentStory/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            return new GetInfo(cookie, GameId, client);
+        }
+
+        public GetInfo RevealCards()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/stories/reveal/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
