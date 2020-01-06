@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace restSharp_Try
 {
-    public class TestClass
+    public class GameTests
     {        
         [Fact]
         public void CreateRoom()
@@ -105,6 +105,20 @@ namespace restSharp_Try
             game.CreateStory("First Story");
             game.StartGame();
             game.Vote();
+            var info = game.ClearVotes();
+            Assert.False(info.GetPlayersAndStateInfo().players[0].voted);
+        }
+
+        [Fact]
+        public void ClearVotesAfterFinishVoting()
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            game.CreateStory("First Story");
+            game.StartGame();
+            game.Vote();
+            game.FinishVoting();
             var info = game.ClearVotes();
             Assert.False(info.GetPlayersAndStateInfo().players[0].voted);
         }

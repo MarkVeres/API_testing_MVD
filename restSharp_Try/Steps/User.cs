@@ -11,6 +11,6 @@ namespace restSharp_Try.Steps
         public bool voted { get; set; }        //this is for seeing if the user has voted
         public string votingStart { get; set; }    //this is the Vote Start status
         public bool closed { get; set; }       //this is for Finish voting
-        public int vote { get; set; }        //this is for the value of the vote
+        public int? vote { get; set; }        //this is for the value of the vote
     }
 }
