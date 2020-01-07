@@ -32,22 +32,14 @@ namespace restSharp_Try
         
         public Player SignUpLogin(string email, string name, string password)  //doesn't work, bad request status
         {
-            var body = $"email={email}" +
-                $"&name={name}" +
+            var body = $"email={email}&" +
+                $"&name={name}&" +
                 $"&password={password}";
-            var request = new RestRequest("/authentication/registerFromAnonymous", Method.POST);
+            var request = new RestRequest("/authentication/register", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            //POSTMAN Code
-            //client.Timeout = -1;
-            //var request = new RestRequest("/authentication/registerFromAnonymous", Method.POST);
-            //request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            //request.AddParameter("email", email);
-            //request.AddParameter("name", name);
-            //request.AddParameter("password", password);
-
+            
             var response = client.Execute(request);
             var cookie = response.Headers
                 .First(h => h.Name == "Set-Cookie")

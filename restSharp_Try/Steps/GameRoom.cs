@@ -166,5 +166,29 @@ namespace restSharp_Try
 
             return new GetInfo(cookie, GameId, client);
         }
+
+        public StoryEdit StoryGet()
+        {
+            var body = $"gameId={GameId}&" + 
+                $"page=1&" +
+                $"skip=0&" +
+                $"perPage=25&" +
+                $"sortingKey=votingStart&" +
+                $"reverse=true";
+
+            var request = new RestRequest("/stories/get/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<StoryEdit>(content);
+
+            return new StoryEdit(GameId, client, cookie, deserializeObject.Stories[0].id);
+        }
     }
 }

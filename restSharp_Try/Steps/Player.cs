@@ -38,7 +38,6 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            // aici parsează response content și crează un obiect de game...​
             var content = response.Content;
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameRoom>(content);
 
@@ -66,7 +65,6 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            // aici parsează response content și crează un obiect de game...​
             var content = response.Content;
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameRoom>(content);
 
@@ -94,7 +92,6 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            // aici parsează response content și crează un obiect de game...​
             var content = response.Content;
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameRoom>(content);
 
@@ -122,7 +119,6 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            // aici parsează response content și crează un obiect de game...​
             var content = response.Content;
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameRoom>(content);
 
@@ -150,7 +146,6 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            // aici parsează response content și crează un obiect de game...​
             var content = response.Content;
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameRoom>(content);
 
@@ -178,7 +173,6 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            // aici parsează response content și crează un obiect de game...​
             var content = response.Content;
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameRoom>(content);
 
@@ -206,7 +200,6 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            // aici parsează response content și crează un obiect de game...​
             var content = response.Content;
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameRoom>(content);
 

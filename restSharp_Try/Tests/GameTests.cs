@@ -14,7 +14,6 @@ namespace restSharp_Try
             var client = new PlanitPockerClient();
             var player = client.QuickPlayLogin("John");
             var game = player.CreateRoom("Test Room");
-            //this assert acceses the getPlayinfo and get the Room title
             Assert.Equal("Test Room", game.GetRoomInfo().title);
         }
 
@@ -164,6 +163,20 @@ namespace restSharp_Try
             //if the user has not voted and the Moderator has revealed the cards,
             //that specific user will have his vote value == -1
             Assert.Equal(-1, info.GetVoteInfo().players[0].vote);
+        }
+
+        [Fact]
+        public void ChangeStoryName()
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            game.CreateStory("First Story");
+            var edit = game.StoryGet();
+            edit.StoryDetails();
+            var info = edit.StoriesUpdate("First Story Modified");
+            Assert.Equal("First Story Modified", info.Stories[0].title);
+
         }
     }
 }
