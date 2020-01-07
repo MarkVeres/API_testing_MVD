@@ -3,17 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace restSharp_Try.Steps
-{
-    public class StoryEdit
+namespace restSharp_Try
+{    
+    public class Stories  //this one is for story creation since story creation and story info are sepparate APIs
     {
-        public StoryEdit[] Stories { get; set; }
+        public Stories[] stories { get; set; }
+        public string title { get; set; }
         public int GameId { get; set; }
         private RestClient client;
         private string cookie;
-        public string id { get; set; }   //this is the story Id
+        public int id { get; set; }   //this is the story Id
 
-        public StoryEdit(int gameId, RestClient client, string cookie, string storyId)
+        public Stories(int gameId, RestClient client, string cookie, int storyId)
         {
             this.GameId = gameId;
             this.client = client;
@@ -23,7 +24,7 @@ namespace restSharp_Try.Steps
 
         public void StoryDetails()
         {
-            var body = $"storyId = {id}&" +
+            var body = $"storyId={id}&" +
                 $"gameId={GameId}";
 
             var request = new RestRequest("/stories/details/", Method.POST);
@@ -36,9 +37,9 @@ namespace restSharp_Try.Steps
             var response = client.Execute(request);
         }
 
-        public Story StoriesUpdate(string title)
+        public void StoriesUpdate(string title)
         {
-            var body = $"storyId = {id}&" +
+            var body = $"storyId={id}&" +
                 $"title={title}&" +
                 $"estimate=";
 
@@ -50,10 +51,30 @@ namespace restSharp_Try.Steps
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
             var response = client.Execute(request);
+        }
+
+        public Stories StoryGet()
+        {
+            var body = $"gameId={GameId}&" +
+                $"page=1&" +
+                $"skip=0&" +
+                $"perPage=25&" +
+                $"sortingKey=votingStart&" +
+                $"reverse=true";
+
+            var request = new RestRequest("/stories/get/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
             var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Story>(content);
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Stories>(content);
 
             return deserializeObject;
         }
-    }
+    }    
 }

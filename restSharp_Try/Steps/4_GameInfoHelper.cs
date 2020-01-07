@@ -5,12 +5,12 @@ using System.Text;
 
 namespace restSharp_Try.Steps
 {
-    public class GetInfo
+    public class GameInfoHelper
     {
         public string cookie;
         public int GameId;
         private RestClient client;
-        public GetInfo(string cookie, int gameId, RestClient client)
+        public GameInfoHelper(string cookie, int gameId, RestClient client)
         {
             this.cookie = cookie;
             this.GameId = gameId;
@@ -36,7 +36,7 @@ namespace restSharp_Try.Steps
             return deserializeObject;
         }
 
-        public CurrentStory GetCurrentStory()    //used for the NextStory Test Assert
+        public CurrentStory GetCurrentStoryInfo()    //used for the NextStory Test Assert
         {
             var body = $"gameId={GameId}&";
 
@@ -52,7 +52,7 @@ namespace restSharp_Try.Steps
 
             return deserializeObject;
         }
-        public Story GetStoryInfo()
+        public Stories GetStoryInfo()
         {
             var body = $"gameId={GameId}&" +
                 $"page=1&" +
@@ -68,9 +68,30 @@ namespace restSharp_Try.Steps
 
             var response = client.Execute(request);
             var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Story>(content);
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Stories>(content);
 
             return deserializeObject;
+        }
+
+        public Stories GetStoryEditInfo()
+        {
+            var body = $"gameId={GameId}&" +
+                $"page=1&" +
+                $"skip=0&" +
+                $"perPage=25&" +
+                $"status=0&";
+
+            var request = new RestRequest("/stories/get/", Method.POST);
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Stories>(content);
+
+            return new Stories(GameId, client, cookie, deserializeObject.stories[0].id);
         }
 
         public User GetStartGameInfo()

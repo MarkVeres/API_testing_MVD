@@ -24,7 +24,7 @@ namespace restSharp_Try
             var player = client.QuickPlayLogin("John");
             var game = player.CreateRoom("Test Room");
             var info = game.CreateStory("Test Story");
-            Assert.Equal("Test Story", info.GetStoryInfo().Stories[0].title);
+            Assert.Equal("Test Story", info.GetStoryInfo().stories[0].title);
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace restSharp_Try
             //Asserts the title of the stories, from the "stories" array
             //Assert.Equal("Test Story",  info.GetStoryInfo().Stories[0].title);
             //Assert.Equal("Test Story 2", info.GetStoryInfo().Stories[1].title);
-            Assert.Equal("Third and Final Test Story", info.GetStoryInfo().Stories[2].title);
+            Assert.Equal("Third and Final Test Story", info.GetStoryInfo().stories[2].title);
         }
 
         [Fact]
@@ -93,7 +93,7 @@ namespace restSharp_Try
             game.Vote();
             game.FinishVoting();
             var info  = game.StartGame();
-            Assert.Equal("Second Story", info.GetCurrentStory().title);
+            Assert.Equal("Second Story", info.GetCurrentStoryInfo().title);
         }
         [Fact]
         public void ClearVotes()
@@ -133,7 +133,7 @@ namespace restSharp_Try
             game.StartGame();
             game.SkipStory();
             var info = game.StartGame();
-            Assert.Equal("Second Story", info.GetCurrentStory().title);
+            Assert.Equal("Second Story", info.GetCurrentStoryInfo().title);
         }
 
         [Fact]
@@ -148,7 +148,7 @@ namespace restSharp_Try
             game.StartGame();
             game.Vote();
             var info  = game.ResetTimer();
-            Assert.True(info.GetCurrentStory().votingDuration == 0);
+            Assert.True(info.GetCurrentStoryInfo().votingDuration == 0);
         }
 
         [Fact]
@@ -171,12 +171,12 @@ namespace restSharp_Try
             var client = new PlanitPockerClient();
             var player = client.QuickPlayLogin("John");
             var game = player.CreateRoom("Test Room");
-            game.CreateStory("First Story");
-            var edit = game.StoryGet();
-            edit.StoryDetails();
-            var info = edit.StoriesUpdate("First Story Modified");
-            Assert.Equal("First Story Modified", info.Stories[0].title);
-
+            var info = game.CreateStory("First Story");
+            var story = info.GetStoryEditInfo();
+            story.StoryDetails();
+            story.StoriesUpdate("First Story Modified");
+            var edit = story.StoryGet();
+            Assert.Equal("First Story Modified", edit.stories[0].title);
         }
     }
 }

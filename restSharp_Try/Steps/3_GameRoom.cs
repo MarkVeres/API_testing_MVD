@@ -40,7 +40,7 @@ namespace restSharp_Try
 
             return deserializeObject;
         }
-        public GetInfo CreateStory(string storyName)
+        public GameInfoHelper CreateStory(string storyName)
         {
             var body = $"gameId={GameId}&" +
                 $"name={storyName}";
@@ -53,10 +53,10 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GetInfo(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client);
         }
 
-        public GetInfo StartGame()    //this is also used for Next Story function as it has the same URL
+        public GameInfoHelper StartGame()    //this is also used for Next Story function as it has the same URL
         {
             var body = $"gameId={GameId}&";
 
@@ -68,10 +68,10 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GetInfo(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client);
         }
         
-        public GetInfo SkipStory()
+        public GameInfoHelper SkipStory()
         {
             var body = $"gameId={GameId}&";
 
@@ -83,10 +83,10 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GetInfo(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client);
         }
 
-        public GetInfo Vote()
+        public GameInfoHelper Vote()
         {
             var body = $"gameId={GameId}&" +
                 $"vote=2";
@@ -99,10 +99,10 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GetInfo(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client);
         }
 
-        public GetInfo FinishVoting()
+        public GameInfoHelper FinishVoting()
         {
             var body = $"gameId={GameId}&" +
                 $"estimate=3";
@@ -116,10 +116,10 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GetInfo(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client);
         }
 
-        public GetInfo ResetTimer()
+        public GameInfoHelper ResetTimer()
         {
             var body = $"gameId={GameId}&";
 
@@ -132,10 +132,10 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GetInfo(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client);
         }
 
-        public GetInfo ClearVotes()
+        public GameInfoHelper ClearVotes()
         {
             var body = $"gameId={GameId}&";
 
@@ -148,10 +148,10 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GetInfo(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client);
         }
 
-        public GetInfo RevealCards()
+        public GameInfoHelper RevealCards()
         {
             var body = $"gameId={GameId}&";
 
@@ -164,31 +164,7 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GetInfo(cookie, GameId, client);
-        }
-
-        public StoryEdit StoryGet()
-        {
-            var body = $"gameId={GameId}&" + 
-                $"page=1&" +
-                $"skip=0&" +
-                $"perPage=25&" +
-                $"sortingKey=votingStart&" +
-                $"reverse=true";
-
-            var request = new RestRequest("/stories/get/", Method.POST);
-
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
-
-            var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<StoryEdit>(content);
-
-            return new StoryEdit(GameId, client, cookie, deserializeObject.Stories[0].id);
+            return new GameInfoHelper(cookie, GameId, client);
         }
     }
 }
