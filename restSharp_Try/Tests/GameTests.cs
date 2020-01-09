@@ -148,7 +148,7 @@ namespace restSharp_Try
             game.StartGame();
             game.Vote();
             var info  = game.ResetTimer();
-            Assert.True(info.GetCurrentStoryInfo().votingDuration == 0);
+            Assert.False(info.GetCurrentStoryInfo().votingDuration == 0);
         }
 
         [Fact]

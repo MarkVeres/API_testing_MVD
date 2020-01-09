@@ -204,6 +204,6 @@ namespace restSharp_Try
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<GameRoom>(content);
 
             return new GameRoom(deserializeObject.GameId, deserializeObject.GameCode, client, cookie);
-        }
+        }        
     }
 }

@@ -1,11 +1,12 @@
 ﻿using RestSharp;
+using restSharp_Try.Steps;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace restSharp_Try
 {    
-    public class Stories  //this one is for story creation since story creation and story info are sepparate APIs
+    public class Stories  //this one is for story creation & editing; CurrentStory if for during-gameplay stories
     {
         public Stories[] stories { get; set; }
         public string title { get; set; }
@@ -41,7 +42,7 @@ namespace restSharp_Try
         {
             var body = $"storyId={id}&" +
                 $"title={title}&" +
-                $"estimate=";
+                $"estimate=3";
 
             var request = new RestRequest("/stories/update/", Method.POST);
 

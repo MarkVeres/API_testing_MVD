@@ -166,5 +166,63 @@ namespace restSharp_Try
 
             return new GameInfoHelper(cookie, GameId, client);
         }
+
+        public GameInfoHelper ResetGameRoom()
+        {
+            var body = $"gameId={GameId}";
+            var request = new RestRequest("/games/reset/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            return new GameInfoHelper(cookie, GameId, client);
+        }
+
+        //this can be used to edit any setting after the room has been created
+        //just change parameters
+        public GameInfoHelper EditCreatedGameRoom(string roomName, bool tf, int duration)
+        {
+            var body = $"name={roomName}" +
+                $"&cardSetType=1" +
+                $"&haveStories=true" +
+                $"&confirmSkip=true" +
+                $"&showVotingToObservers=true" +
+                $"&autoReveal=true" +
+                $"&changeVote=false" +
+                $"&countdownTimer={tf}" +
+                $"&countdownTimerValue={duration}";
+            var request = new RestRequest("/games/create/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            return new GameInfoHelper(cookie, GameId, client);
+        }
+
+        public GameInfoHelper DeleteGameRoom()
+        {
+            var body = $"gameId={GameId}";
+            var request = new RestRequest("/games/create/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            return new GameInfoHelper(cookie, GameId, client);
+        }
     }
 }

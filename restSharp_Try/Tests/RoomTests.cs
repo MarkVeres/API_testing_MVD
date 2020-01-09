@@ -1,11 +1,12 @@
-﻿using System;
+﻿using restSharp_Try.GameParameteres;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
 namespace restSharp_Try.Tests
 {
-    public class RoomSettingsTests
+    public class RoomTests
     {
         //these tests check for functions that are not default to room creation
         //more precise they check if the available options regarding room setting are working
@@ -69,6 +70,43 @@ namespace restSharp_Try.Tests
             var game = player.UseCountDownTimer("John", true, 30);
             var info = game.GetRoomInfo();
             Assert.True(info.countdownTimer);
+        }
+
+        [Fact]
+        public void ResetGameRoom()
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            game.StartGame();
+            game.Vote();
+            game.FinishVoting();
+            var info = game.ResetGameRoom();
+            Assert.False(info.GetPlayersAndStateInfo().players[0].voted);
+        }
+
+        [Fact]
+        public void ModifyGameRoomSettings()
+        {
+            //by default, the game creates rooms without a countdown timer
+            //this test will create a game (without a countdown timer) and then add the countdowntimer
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            //now we add the countdown timer by modifying the Room settings
+            var info = game.EditCreatedGameRoom("Test Room", true, 30);
+            var sert = info.GetGamesListInfo();
+            Assert.True(sert[0].countdownTimer);
+        }
+
+        [Fact]
+        public void DeleteGameRoom()
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            game.DeleteGameRoom();
+            //Add assert to this
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using RestSharp;
+using restSharp_Try.GameParameteres;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -147,6 +148,25 @@ namespace restSharp_Try.Steps
             var response = client.Execute(request);
             var content = response.Content;
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(content);
+
+            return deserializeObject;
+        }
+
+        public List<ListRoom> GetGamesListInfo()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/games/getList/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ListRoom>>(content);
 
             return deserializeObject;
         }
