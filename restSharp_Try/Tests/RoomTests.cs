@@ -106,8 +106,9 @@ namespace restSharp_Try.Tests
             var player = client.QuickPlayLogin("John");
             var game = player.CreateRoom("Test Room");
             game.DeleteGameRoom();
-            //no API after deleting game room
-            //old APIs keep the deteled game room information
+            //make call to gameRoom method
+            //assert that you recieve 404 Error
+            //=> game room no longer exists
         }
     }
 }

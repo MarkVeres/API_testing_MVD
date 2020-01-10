@@ -176,25 +176,6 @@ namespace restSharp_Try.Steps
             return deserializeObject;
         }
 
-        public User GetPlayerId()
-        {
-            var body = $"gameId={GameId}&";
-
-            var request = new RestRequest("/games/getPlayersAndState/", Method.POST);
-
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
-
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
-            var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(content);
-
-            return new User(GameId, client, cookie, deserializeObject.players[0].id, deserializeObject.players[0].voteDuration);
-        }
-
         public List<ListRoom> GetGamesListInfo()
         {
             var body = $"gameId={GameId}&";

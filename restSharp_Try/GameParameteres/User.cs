@@ -15,18 +15,5 @@ namespace restSharp_Try.Steps
         public int? vote { get; set; }        //this is for the value of the vote
         public int? voteDuration { get; set; }   //this is for the duration of the vote
         public int id { get; set; }  //this is the player's ID
-
-        public int GameId { get; set; }
-        private RestClient client;
-        private string cookie;
-
-        public User(int gameId, RestClient client, string cookie, int id, int? voteDuration)
-        {
-            this.GameId = gameId;
-            this.client = client;
-            this.cookie = cookie;
-            this.id = id;
-            this.voteDuration = voteDuration;
-        }
     }
 }

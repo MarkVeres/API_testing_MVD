@@ -198,9 +198,7 @@ namespace restSharp_Try
             game.CreateStory("First Story");
             game.StartGame();
             game.Vote();
-            var info = game.FinishVoting();
-            var user = info.GetPlayerId();
-            //
+            //check Slack for details
         }
     }
 }
