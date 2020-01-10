@@ -106,7 +106,8 @@ namespace restSharp_Try.Tests
             var player = client.QuickPlayLogin("John");
             var game = player.CreateRoom("Test Room");
             game.DeleteGameRoom();
-            //Add assert to this
+            //no API after deleting game room
+            //old APIs keep the deteled game room information
         }
     }
 }

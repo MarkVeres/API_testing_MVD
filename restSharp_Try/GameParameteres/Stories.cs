@@ -14,6 +14,7 @@ namespace restSharp_Try
         private RestClient client;
         private string cookie;
         public int id { get; set; }   //this is the story Id
+        public int? estimate { get; set; }
 
         public Stories(int gameId, RestClient client, string cookie, int storyId)
         {
@@ -42,7 +43,7 @@ namespace restSharp_Try
         {
             var body = $"storyId={id}&" +
                 $"title={title}&" +
-                $"estimate=3";
+                $"estimate=5";
 
             var request = new RestRequest("/stories/update/", Method.POST);
 

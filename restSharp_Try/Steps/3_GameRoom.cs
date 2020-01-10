@@ -53,7 +53,7 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GameInfoHelper(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client, GameCode);
         }
 
         public GameInfoHelper StartGame()    //this is also used for Next Story function as it has the same URL
@@ -68,7 +68,7 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GameInfoHelper(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client, GameCode);
         }
         
         public GameInfoHelper SkipStory()
@@ -83,10 +83,10 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GameInfoHelper(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client, GameCode);
         }
 
-        public GameInfoHelper Vote()
+        public GameInfoHelper Vote()   //votes are sent with this method; estimates are sent by FinishVoting() method
         {
             var body = $"gameId={GameId}&" +
                 $"vote=2";
@@ -99,10 +99,10 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GameInfoHelper(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client, GameCode);
         }
 
-        public GameInfoHelper FinishVoting()
+        public GameInfoHelper FinishVoting()    //estimates are send with this method!!!
         {
             var body = $"gameId={GameId}&" +
                 $"estimate=3";
@@ -116,14 +116,14 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GameInfoHelper(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client, GameCode);
         }
 
         public GameInfoHelper ResetTimer()
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/games/resetTimer/", Method.POST);
+            var request = new RestRequest("/games/resetCurrentStory/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -132,7 +132,7 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GameInfoHelper(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client, GameCode);
         }
 
         public GameInfoHelper ClearVotes()
@@ -148,7 +148,7 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GameInfoHelper(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client, GameCode);
         }
 
         public GameInfoHelper RevealCards()
@@ -164,7 +164,7 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GameInfoHelper(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client, GameCode);
         }
 
         public GameInfoHelper ResetGameRoom()
@@ -180,7 +180,7 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GameInfoHelper(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client, GameCode);
         }
 
         //this can be used to edit any setting after the room has been created
@@ -206,7 +206,7 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GameInfoHelper(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client, GameCode);
         }
 
         public GameInfoHelper DeleteGameRoom()
@@ -222,7 +222,7 @@ namespace restSharp_Try
 
             var response = client.Execute(request);
 
-            return new GameInfoHelper(cookie, GameId, client);
+            return new GameInfoHelper(cookie, GameId, client, GameCode);
         }
     }
 }

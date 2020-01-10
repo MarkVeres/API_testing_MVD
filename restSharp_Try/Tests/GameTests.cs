@@ -36,10 +36,6 @@ namespace restSharp_Try
             game.CreateStory("Test Story");
             game.CreateStory("Test Story 2");
             var info = game.CreateStory("Third and Final Test Story");
-
-            //Asserts the title of the stories, from the "stories" array
-            //Assert.Equal("Test Story",  info.GetStoryInfo().Stories[0].title);
-            //Assert.Equal("Test Story 2", info.GetStoryInfo().Stories[1].title);
             Assert.Equal("Third and Final Test Story", info.GetStoryInfo().stories[2].title);
         }
 
@@ -139,8 +135,6 @@ namespace restSharp_Try
         [Fact]
         public void ResetGameTimer()
         {
-            //doesn't work correctly, votingDuration stays 0 until you Finish  voting,
-            //at which point, you can no longer reset the Timer
             var client = new PlanitPockerClient();
             var player = client.QuickPlayLogin("John");
             var game = player.CreateRoom("Test Room");
@@ -148,7 +142,7 @@ namespace restSharp_Try
             game.StartGame();
             game.Vote();
             var info  = game.ResetTimer();
-            Assert.False(info.GetCurrentStoryInfo().votingDuration == 0);
+            Assert.Null(info.GetPlayersAndStateInfo().players[0].voteDuration);
         }
 
         [Fact]
@@ -161,7 +155,7 @@ namespace restSharp_Try
             game.StartGame();
             var info = game.RevealCards();
             //if the user has not voted and the Moderator has revealed the cards,
-            //that specific user will have his vote value == -1
+            //that specific user will have his vote value set to -1
             Assert.Equal(-1, info.GetVoteInfo().players[0].vote);
         }
 
@@ -177,6 +171,36 @@ namespace restSharp_Try
             story.StoriesUpdate("First Story Modified");
             var edit = story.StoryGet();
             Assert.Equal("First Story Modified", edit.stories[0].title);
+        }
+
+        [Fact]
+        public void ChangeEstimate()
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            game.CreateStory("First Story");
+            game.StartGame();
+            game.Vote();
+            var info = game.FinishVoting();
+            var story = info.GetStoryEstimateEditInfo();
+            story.StoriesUpdate("First Story");
+            var edit = story.StoryGet();
+            Assert.Equal(5, edit.stories[0].estimate);
+        }
+
+        [Fact]
+        public void ExportGameReport()
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            game.CreateStory("First Story");
+            game.StartGame();
+            game.Vote();
+            var info = game.FinishVoting();
+            var user = info.GetPlayerId();
+            //
         }
     }
 }

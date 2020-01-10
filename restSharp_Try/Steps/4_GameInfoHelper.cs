@@ -10,12 +10,14 @@ namespace restSharp_Try.Steps
     {
         public string cookie;
         public int GameId;
+        public string GameCode { get; set; }
         private RestClient client;
-        public GameInfoHelper(string cookie, int gameId, RestClient client)
+        public GameInfoHelper(string cookie, int gameId, RestClient client, string gameCode)
         {
             this.cookie = cookie;
             this.GameId = gameId;
             this.client = client;
+            this.GameCode = gameCode;
         }
 
         public User GetRoomInfo()
@@ -95,6 +97,28 @@ namespace restSharp_Try.Steps
             return new Stories(GameId, client, cookie, deserializeObject.stories[0].id);
         }
 
+        public Stories GetStoryEstimateEditInfo()
+        {
+            var body = $"gameId={GameId}&" +
+                $"page=1&" +
+                $"skip=0&" +
+                $"perPage=25&" +
+                $"sortingKey=votingStart&" +
+                $"reverse=true";
+
+            var request = new RestRequest("/stories/get/", Method.POST);
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Stories>(content);
+
+            return new Stories(GameId, client, cookie, deserializeObject.stories[0].id);
+        }
+
         public User GetStartGameInfo()
         {
             var body = $"gameId={GameId}&";
@@ -150,6 +174,25 @@ namespace restSharp_Try.Steps
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(content);
 
             return deserializeObject;
+        }
+
+        public User GetPlayerId()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/games/getPlayersAndState/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(content);
+
+            return new User(GameId, client, cookie, deserializeObject.players[0].id, deserializeObject.players[0].voteDuration);
         }
 
         public List<ListRoom> GetGamesListInfo()
