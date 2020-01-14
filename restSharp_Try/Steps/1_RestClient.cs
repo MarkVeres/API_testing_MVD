@@ -8,7 +8,7 @@ namespace restSharp_Try
 {
     public class PlanitPockerClient
     {
-        private const string baseUrl = "https://www.planitpoker.com/api";
+        private const string baseUrl = "https://www.planitpoker.com";
         private readonly RestClient client;
         public PlanitPockerClient()
         {
@@ -17,7 +17,7 @@ namespace restSharp_Try
         public Player QuickPlayLogin(string userName)
         {
             var body = $"name={userName}";
-            var request = new RestRequest("/authentication/anonymous", Method.POST);
+            var request = new RestRequest("/api/authentication/anonymous", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
@@ -35,7 +35,7 @@ namespace restSharp_Try
             var body = $"email={email}&" +
                 $"&name={name}&" +
                 $"&password={password}";
-            var request = new RestRequest("/authentication/register", Method.POST);
+            var request = new RestRequest("/api/authentication/register", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
@@ -53,7 +53,7 @@ namespace restSharp_Try
         {
             var body = $"email={email}" +
                 $"&password={password}";
-            var request = new RestRequest("/authentication/login", Method.POST);
+            var request = new RestRequest("/api/authentication/login", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);

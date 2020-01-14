@@ -26,7 +26,7 @@ namespace restSharp_Try
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/play/getPlayInfo", Method.POST);
+            var request = new RestRequest("/api/play/getPlayInfo", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -45,7 +45,7 @@ namespace restSharp_Try
             var body = $"gameId={GameId}&" +
                 $"name={storyName}";
 
-            var request = new RestRequest("/stories/create/", Method.POST);
+            var request = new RestRequest("/api/stories/create/", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
@@ -60,7 +60,7 @@ namespace restSharp_Try
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/stories/next/", Method.POST);
+            var request = new RestRequest("/api/stories/next/", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
@@ -75,7 +75,7 @@ namespace restSharp_Try
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/stories/skip/", Method.POST);
+            var request = new RestRequest("/api/stories/skip/", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
@@ -91,7 +91,7 @@ namespace restSharp_Try
             var body = $"gameId={GameId}&" +
                 $"vote=2";
 
-            var request = new RestRequest("/stories/vote/", Method.POST);
+            var request = new RestRequest("/api/stories/vote/", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
@@ -107,7 +107,7 @@ namespace restSharp_Try
             var body = $"gameId={GameId}&" +
                 $"estimate=3";
 
-            var request = new RestRequest("/stories/finish/", Method.POST);
+            var request = new RestRequest("/api/stories/finish/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -123,7 +123,7 @@ namespace restSharp_Try
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/games/resetCurrentStory/", Method.POST);
+            var request = new RestRequest("/api/games/resetCurrentStory/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -139,7 +139,7 @@ namespace restSharp_Try
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/games/resetCurrentStory/", Method.POST);
+            var request = new RestRequest("/api/games/resetCurrentStory/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -155,7 +155,7 @@ namespace restSharp_Try
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/stories/reveal/", Method.POST);
+            var request = new RestRequest("/api/stories/reveal/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -170,7 +170,7 @@ namespace restSharp_Try
         public GameInfoHelper ResetGameRoom()
         {
             var body = $"gameId={GameId}";
-            var request = new RestRequest("/games/reset/", Method.POST);
+            var request = new RestRequest("/api/games/reset/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -196,7 +196,7 @@ namespace restSharp_Try
                 $"&changeVote=false" +
                 $"&countdownTimer={tf}" +
                 $"&countdownTimerValue={duration}";
-            var request = new RestRequest("/games/create/", Method.POST);
+            var request = new RestRequest("/api/games/create/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -212,13 +212,29 @@ namespace restSharp_Try
         public GameInfoHelper DeleteGameRoom()
         {
             var body = $"gameId={GameId}";
-            var request = new RestRequest("/games/create/", Method.POST);
+            var request = new RestRequest("/api/games/create/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
 
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            return new GameInfoHelper(cookie, GameId, client, GameCode);
+        }
+
+        public GameInfoHelper GetGameReport()
+        {
+            var requestString = "/board/exportstories//" + Convert.ToString(GameId);
+            var request = new RestRequest(requestString, Method.GET);
+
+            //request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+
+            //request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
             var response = client.Execute(request);
 

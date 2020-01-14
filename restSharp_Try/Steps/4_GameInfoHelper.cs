@@ -2,7 +2,9 @@
 using restSharp_Try.GameParameteres;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
+using System.IO;
 
 namespace restSharp_Try.Steps
 {
@@ -24,7 +26,7 @@ namespace restSharp_Try.Steps
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/play/getPlayInfo", Method.POST);
+            var request = new RestRequest("/api/play/getPlayInfo", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -43,7 +45,7 @@ namespace restSharp_Try.Steps
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/games/getCurrentStory/", Method.POST);
+            var request = new RestRequest("/api/games/getCurrentStory/", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
@@ -63,7 +65,7 @@ namespace restSharp_Try.Steps
                 $"perPage=25&" +
                 $"status=0&";
 
-            var request = new RestRequest("/stories/get/", Method.POST);
+            var request = new RestRequest("/api/stories/get/", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
@@ -84,7 +86,7 @@ namespace restSharp_Try.Steps
                 $"perPage=25&" +
                 $"status=0&";
 
-            var request = new RestRequest("/stories/get/", Method.POST);
+            var request = new RestRequest("/api/stories/get/", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
@@ -106,7 +108,7 @@ namespace restSharp_Try.Steps
                 $"sortingKey=votingStart&" +
                 $"reverse=true";
 
-            var request = new RestRequest("/stories/get/", Method.POST);
+            var request = new RestRequest("/api/stories/get/", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
@@ -123,7 +125,7 @@ namespace restSharp_Try.Steps
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/stories/next/", Method.POST);
+            var request = new RestRequest("/api/stories/next/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -142,7 +144,7 @@ namespace restSharp_Try.Steps
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/games/gameStoryVoteEvent", Method.POST);
+            var request = new RestRequest("/api/games/gameStoryVoteEvent", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -161,7 +163,7 @@ namespace restSharp_Try.Steps
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/games/getPlayersAndState/", Method.POST);
+            var request = new RestRequest("/api/games/getPlayersAndState/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -180,7 +182,7 @@ namespace restSharp_Try.Steps
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/games/getList/", Method.POST);
+            var request = new RestRequest("/api/games/getList/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -193,6 +195,16 @@ namespace restSharp_Try.Steps
             var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ListRoom>>(content);
 
             return deserializeObject;
+        }
+
+        public string GetExportInfo()
+        {
+            string adress = "https://www.planitpoker.com/board/exportstories//" + Convert.ToString(GameId);
+            WebClient webClient = new WebClient();
+            webClient.Headers.Add("Cookie", cookie);
+            string information = webClient.DownloadString(adress);
+
+            return information;
         }
     }
 }

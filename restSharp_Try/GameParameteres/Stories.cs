@@ -29,7 +29,7 @@ namespace restSharp_Try
             var body = $"storyId={id}&" +
                 $"gameId={GameId}";
 
-            var request = new RestRequest("/stories/details/", Method.POST);
+            var request = new RestRequest("/api/stories/details/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -45,7 +45,7 @@ namespace restSharp_Try
                 $"title={title}&" +
                 $"estimate=5";
 
-            var request = new RestRequest("/stories/update/", Method.POST);
+            var request = new RestRequest("/api/stories/update/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -64,7 +64,7 @@ namespace restSharp_Try
                 $"sortingKey=votingStart&" +
                 $"reverse=true";
 
-            var request = new RestRequest("/stories/get/", Method.POST);
+            var request = new RestRequest("/api/stories/get/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");

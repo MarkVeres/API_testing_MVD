@@ -28,7 +28,7 @@ namespace restSharp_Try
                 $"&changeVote=false" +
                 $"&countdownTimer=false" +
                 $"&countdownTimerValue=30";
-            var request = new RestRequest("/games/create/", Method.POST);
+            var request = new RestRequest("/api/games/create/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -55,7 +55,7 @@ namespace restSharp_Try
                 $"&changeVote=false" +
                 $"&countdownTimer=false" +
                 $"&countdownTimerValue=30";
-            var request = new RestRequest("/games/create/", Method.POST);
+            var request = new RestRequest("/api/games/create/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -82,7 +82,7 @@ namespace restSharp_Try
                 $"&changeVote=false" +
                 $"&countdownTimer=false" +
                 $"&countdownTimerValue=30";
-            var request = new RestRequest("/games/create/", Method.POST);
+            var request = new RestRequest("/api/games/create/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -109,7 +109,7 @@ namespace restSharp_Try
                 $"&changeVote=false" +
                 $"&countdownTimer=false" +
                 $"&countdownTimerValue=30";
-            var request = new RestRequest("/games/create/", Method.POST);
+            var request = new RestRequest("/api/games/create/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -136,7 +136,7 @@ namespace restSharp_Try
                 $"&changeVote=false" +
                 $"&countdownTimer=false" +
                 $"&countdownTimerValue=30";
-            var request = new RestRequest("/games/create/", Method.POST);
+            var request = new RestRequest("/api/games/create/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -163,7 +163,7 @@ namespace restSharp_Try
                 $"&changeVote={tf}" +
                 $"&countdownTimer=false" +
                 $"&countdownTimerValue=30";
-            var request = new RestRequest("/games/create/", Method.POST);
+            var request = new RestRequest("/api/games/create/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -190,7 +190,7 @@ namespace restSharp_Try
                 $"&changeVote=false" +
                 $"&countdownTimer={tf}" +
                 $"&countdownTimerValue={duration}";
-            var request = new RestRequest("/games/create/", Method.POST);
+            var request = new RestRequest("/api/games/create/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");

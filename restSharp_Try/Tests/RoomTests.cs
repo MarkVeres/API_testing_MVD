@@ -105,10 +105,10 @@ namespace restSharp_Try.Tests
             var client = new PlanitPockerClient();
             var player = client.QuickPlayLogin("John");
             var game = player.CreateRoom("Test Room");
-            game.DeleteGameRoom();
-            //make call to gameRoom method
-            //assert that you recieve 404 Error
-            //=> game room no longer exists
+            var info = game.DeleteGameRoom();
+            var sert = info.GetGamesListInfo();
+            //asserts that the game room that previously had the name "Test Room" does not longer have it's name
+            Assert.Null(sert[0].name);
         }
     }
 }

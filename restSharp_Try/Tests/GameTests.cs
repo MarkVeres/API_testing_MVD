@@ -198,7 +198,10 @@ namespace restSharp_Try
             game.CreateStory("First Story");
             game.StartGame();
             game.Vote();
-            //check Slack for details
+            game.FinishVoting();
+            var info = game.GetGameReport();
+            Assert.Contains("John", info.GetExportInfo());
+            Assert.Contains("First Story", info.GetExportInfo());
         }
     }
 }
