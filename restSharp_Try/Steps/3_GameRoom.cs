@@ -230,13 +230,25 @@ namespace restSharp_Try
             var requestString = "/board/exportstories//" + Convert.ToString(GameId);
             var request = new RestRequest(requestString, Method.GET);
 
-            //request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
 
-            //request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
             var response = client.Execute(request);
+
+            return new GameInfoHelper(cookie, GameId, client, GameCode);
+        }
+
+        public GameInfoHelper NewUserQuickPlayLogin(string userName)
+        {
+            var body = $"name={userName}";
+            var request = new RestRequest("/api/authentication/anonymous", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);            
 
             return new GameInfoHelper(cookie, GameId, client, GameCode);
         }

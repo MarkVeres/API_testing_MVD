@@ -1,14 +1,14 @@
 ﻿using RestSharp;
-using restSharp_Try.GameParameteres;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace restSharp_Try.Steps
+namespace restSharp_Try.GameParameteres
 {
-    public class User
+    public class ListUser  //this class is still in testing
+                           //might not be necessary
     {
-        public User[] players { get; set; }    //this gives the list of players
+        public ListUser[] players { get; set; }    //this gives the list of players
         public string name { get; set; }       //this is for getting the name of the user
         public bool voted { get; set; }        //this is for seeing if the user has voted
         public string votingStart { get; set; }    //this is the Vote Start status
@@ -17,14 +17,14 @@ namespace restSharp_Try.Steps
         public int? voteDuration { get; set; }   //this is for the duration of the vote
         public int id { get; set; }  //this is the player's ID
         public int? inGameRole { get; set; }   //apparently, "5" is the role of Observer and "6" is the role of Moderator
-                                              //player role is "2"  
+                                               //player role is "2"  
 
         public string cookie;
         public int GameId;
         public int Id { get; set; }
         private RestClient client;
 
-        public User(int id, string cookie, int gameId, RestClient client)
+        public ListUser(int id, string cookie, int gameId, RestClient client)
         {
             this.Id = id;
             this.cookie = cookie;
@@ -47,7 +47,7 @@ namespace restSharp_Try.Steps
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
         }
 
-        public User GetUserInfo()
+        public ListUser GetUserInfo()
         {
             var body = $"gameId={GameId}&";
 
@@ -61,7 +61,7 @@ namespace restSharp_Try.Steps
 
             var response = client.Execute(request);
             var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(content);
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<ListUser>(content);
 
             return deserializeObject;
         }

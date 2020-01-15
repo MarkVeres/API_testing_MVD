@@ -206,5 +206,24 @@ namespace restSharp_Try.Steps
 
             return information;
         }
+
+        public ListUser GetUserId()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/api/games/getPlayersAndState", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<ListUser>(content);
+
+            return new ListUser(deserializeObject.players[0].id, cookie, GameId, client);
+        }
     }
 }

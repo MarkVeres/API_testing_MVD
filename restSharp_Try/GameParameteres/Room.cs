@@ -13,5 +13,6 @@ namespace restSharp_Try.Steps
         public bool autoReveal { get; set; }  //automatically reveal the votes when voting finishes?
         public bool changeVote { get; set; }   //allow players to change vote after they have voted?
         public bool countdownTimer { get; set; }  //use a countdown timer?
+        public bool moderatorConnected { get; set; }   //is the moderator connected
     }
 }

@@ -28,6 +28,34 @@ namespace restSharp_Try
         }
 
         [Fact]
+        public void UserThatCreatedGameShouldBeModerator()
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            game.CreateStory("Test Story");
+            var info = game.GetRoomInfo();
+            //since there is only 1 user in this room, the moderatorConnected assert can be used
+            //also, it seems that the API response for moderator role check is "6"
+            Assert.True(info.moderatorConnected);
+        }
+
+        [Fact]
+        public void ChangeinGameRole()
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            game.CreateStory("Test Story");
+            var info = game.StartGame();
+            var user = info.GetUserId();  //this does not deserialize used id (id)
+                                          //needs fixing
+            user.ChangeRoleToObserver();
+            var sert = user.GetUserInfo();
+            Assert.Equal(5, sert.players[0].inGameRole);
+        }
+
+        [Fact]
         public void CreateMultipleStories()
         {
             var client = new PlanitPockerClient();
@@ -172,6 +200,39 @@ namespace restSharp_Try
             var edit = story.StoryGet();
             Assert.Equal("First Story Modified", edit.stories[0].title);
         }
+
+        [Fact]
+        public void AddNewStoryAfterVotingFinishes()
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            game.CreateStory("First Story");
+            game.CreateStory("Second Story");
+            game.StartGame();
+            game.Vote();
+            game.FinishVoting();
+            var info = game.CreateStory("Third Story After Voting");
+            //voting on the First Story is done, so it is not longer in the initial list
+            //therefore the "Second Story" has the index of "0"
+            //and the Latest added story is next in line, thus index "1"
+            Assert.Equal("Third Story After Voting", info.GetStoryInfo().stories[1].title);
+        }
+
+        [Fact]
+        public void DeleteStory()
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            var info = game.CreateStory("Test Story");
+            var story = info.GetStoryEditInfo();
+            story.StoriesDelete();
+            var sert = story.GetStoryState();
+            //since only 1 story was created, if that story is deleted, there are no "created" stories anymore
+            Assert.False(sert.storiesCreated);
+        }
+
 
         [Fact]
         public void ChangeEstimate()

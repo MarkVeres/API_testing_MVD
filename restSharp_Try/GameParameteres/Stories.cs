@@ -15,6 +15,8 @@ namespace restSharp_Try
         private string cookie;
         public int id { get; set; }   //this is the story Id
         public int? estimate { get; set; }
+        public bool storiesCreated { get; set; }
+        public int? storiesCount { get; set; }
 
         public Stories(int gameId, RestClient client, string cookie, int storyId)
         {
@@ -65,6 +67,40 @@ namespace restSharp_Try
                 $"reverse=true";
 
             var request = new RestRequest("/api/stories/get/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Stories>(content);
+
+            return deserializeObject;
+        }
+
+        public void StoriesDelete()
+        {
+            var body = $"gameId={GameId}&" +
+                $"storyId={id}";
+
+            var request = new RestRequest("/api/stories/delete/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+        }
+
+        public Stories GetStoryState()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/api/games/getStoryState/", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
