@@ -207,11 +207,11 @@ namespace restSharp_Try.Steps
             return information;
         }
 
-        public ListUser GetUserId()
+        public User GetUserId()
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/api/games/getPlayersAndState", Method.POST);
+            var request = new RestRequest("/api/play/getPlayInfo", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -221,9 +221,10 @@ namespace restSharp_Try.Steps
 
             var response = client.Execute(request);
             var content = response.Content;
-            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<ListUser>(content);
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(content);
 
-            return new ListUser(deserializeObject.players[0].id, cookie, GameId, client);
+            return new User(GameId, client, cookie, deserializeObject.players[0].id);
+            //does not deserialize anything within the players[...] array
         }
     }
 }

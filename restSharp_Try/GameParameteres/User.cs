@@ -17,14 +17,14 @@ namespace restSharp_Try.Steps
         public int? voteDuration { get; set; }   //this is for the duration of the vote
         public int id { get; set; }  //this is the player's ID
         public int? inGameRole { get; set; }   //apparently, "5" is the role of Observer and "6" is the role of Moderator
-                                              //player role is "2"  
+                                              //player role is "2"
 
         public string cookie;
         public int GameId;
         public int Id { get; set; }
         private RestClient client;
 
-        public User(int id, string cookie, int gameId, RestClient client)
+        public User(int gameId, RestClient client, string cookie, int id)
         {
             this.Id = id;
             this.cookie = cookie;
