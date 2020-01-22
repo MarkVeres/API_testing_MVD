@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
+using Newtonsoft.Json;
+using restSharp_Try.GameParameteres;
 
 namespace restSharp_Try
 {   
@@ -15,6 +17,7 @@ namespace restSharp_Try
         private RestClient client;
         private string cookie;
 
+
         public GameRoom(int gameId, string gameCode, RestClient client, string cookie)
         {
             this.GameId = gameId;
@@ -22,6 +25,7 @@ namespace restSharp_Try
             this.client = client;
             this.cookie = cookie;
         }
+
         public Room GetRoomInfo()
         {
             var body = $"gameId={GameId}&";
@@ -40,6 +44,7 @@ namespace restSharp_Try
 
             return deserializeObject;
         }
+
         public GameInfoHelper CreateStory(string storyName)
         {
             var body = $"gameId={GameId}&" +
@@ -238,19 +243,21 @@ namespace restSharp_Try
             return new GameInfoHelper(cookie, GameId, client, GameCode);
         }
 
-        public GameInfoHelper NewUserQuickPlayLogin(string userName)
+        public NewUser NewUserQuickPlayLogin(string userName)
         {
+            var secondClient = new RestClient();
             var body = $"name={userName}";
             var request = new RestRequest("/api/authentication/anonymous", Method.POST);
-
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+            var response = client.Execute(request);
+            var secondCookie = response.Headers
+                .First(h => h.Name == "Set-Cookie")
+                .Value
+                .ToString();
 
-            var response = client.Execute(request);            
-
-            return new GameInfoHelper(cookie, GameId, client, GameCode);
-        }
+            return new NewUser(GameId, GameCode, secondClient, secondCookie);
+        }        
     }
 }

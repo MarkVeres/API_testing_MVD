@@ -1,4 +1,5 @@
 ﻿using RestSharp;
+using restSharp_Try.Steps;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace restSharp_Try
 
             return new Player(cookie, client);
         }
-        
+
         public Player SignUpLogin(string email, string name, string password)  //doesn't work, bad request status
         {
             var body = $"email={email}&" +

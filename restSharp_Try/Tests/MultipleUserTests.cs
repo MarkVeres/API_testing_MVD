@@ -14,9 +14,14 @@ namespace restSharp_Try.Tests
             var player = client.QuickPlayLogin("John");
             var game = player.CreateRoom("Test Room");
             game.CreateStory("Test Story");
-            game.NewUserQuickPlayLogin("Jack");
-            var info = game.StartGame();
+
+            var uGame = game.NewUserQuickPlayLogin("Jack");
+            uGame.GetInRoom();
+
+            //assert
+            var info = game.Vote();
             Assert.Equal("Jack", info.GetPlayersAndStateInfo().players[1].name);
+
         }
     }
 }

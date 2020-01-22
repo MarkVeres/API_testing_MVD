@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,5 +15,6 @@ namespace restSharp_Try.Steps
         public bool changeVote { get; set; }   //allow players to change vote after they have voted?
         public bool countdownTimer { get; set; }  //use a countdown timer?
         public bool moderatorConnected { get; set; }   //is the moderator connected
+        
     }
 }
