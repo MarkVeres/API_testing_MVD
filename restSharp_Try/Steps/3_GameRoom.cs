@@ -257,7 +257,7 @@ namespace restSharp_Try
                 .Value
                 .ToString();
 
-            return new NewUser(GameId, GameCode, secondClient, secondCookie);
+            return new NewUser(GameId, GameCode, client, secondCookie);
         }        
     }
 }
