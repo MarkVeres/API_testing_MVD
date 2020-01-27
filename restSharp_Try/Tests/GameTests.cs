@@ -74,10 +74,8 @@ namespace restSharp_Try
             var player = client.QuickPlayLogin("John");
             var game = player.CreateRoom("Test Room");
             game.CreateStory("Test Story");
-            var start = game.StartGame();
-            var info = start.GetStartGameInfo();
-            //Assert should be updated to current year/date, accordingly
-            Assert.Contains("2020", info.votingStart);
+            var info = game.StartGame();
+            Assert.True(info.GetPlayersAndStateInfo().gameStarted);
         }
 
         [Fact]
