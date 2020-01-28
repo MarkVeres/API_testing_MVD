@@ -11,7 +11,7 @@ namespace restSharp_Try.GameParameteres
         public int GameId { get; set; }
         public string GameCode { get; set; }
         private RestClient client;
-        private string secondCookie;
+        private string newUserCookie;
 
 
         public NewUser(int gameId, string gameCode, RestClient client, string cookie)
@@ -19,7 +19,7 @@ namespace restSharp_Try.GameParameteres
             this.GameId = gameId;
             this.GameCode = gameCode;
             this.client = client;
-            this.secondCookie = cookie;
+            this.newUserCookie = cookie;
         }
 
         public void GetInRoom()
@@ -28,7 +28,7 @@ namespace restSharp_Try.GameParameteres
 
             var request = new RestRequest(adress, Method.GET);
 
-            request.AddHeader("Cookie", secondCookie);
+            request.AddHeader("Cookie", newUserCookie);
 
             IRestResponse response = client.Execute(request);
         }
@@ -41,12 +41,12 @@ namespace restSharp_Try.GameParameteres
             var request = new RestRequest("/api/stories/create/", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", secondCookie);
+            request.AddHeader("Cookie", newUserCookie);
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
             var response = client.Execute(request);
 
-            return new GameInfoHelper(secondCookie, GameId, client, GameCode);
+            return new GameInfoHelper(newUserCookie, GameId, client, GameCode);
         }
 
         public GameInfoHelper StartGame()    //this is also used for Next Story function as it has the same URL
@@ -56,12 +56,12 @@ namespace restSharp_Try.GameParameteres
             var request = new RestRequest("/api/stories/next/", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", secondCookie);
+            request.AddHeader("Cookie", newUserCookie);
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
             var response = client.Execute(request);
 
-            return new GameInfoHelper(secondCookie, GameId, client, GameCode);
+            return new GameInfoHelper(newUserCookie, GameId, client, GameCode);
         }
 
         public GameInfoHelper Vote()   //votes are sent with this method; estimates are sent by FinishVoting() method
@@ -72,12 +72,12 @@ namespace restSharp_Try.GameParameteres
             var request = new RestRequest("/api/stories/vote/", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", secondCookie);
+            request.AddHeader("Cookie", newUserCookie);
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
             var response = client.Execute(request);
 
-            return new GameInfoHelper(secondCookie, GameId, client, GameCode);
+            return new GameInfoHelper(newUserCookie, GameId, client, GameCode);
         }
 
         public GameInfoHelper SkipStory()
@@ -87,12 +87,44 @@ namespace restSharp_Try.GameParameteres
             var request = new RestRequest("/api/stories/skip/", Method.POST);
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", secondCookie);
+            request.AddHeader("Cookie", newUserCookie);
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
             var response = client.Execute(request);
 
-            return new GameInfoHelper(secondCookie, GameId, client, GameCode);
+            return new GameInfoHelper(newUserCookie, GameId, client, GameCode);
+        }
+
+        public GameInfoHelper ResetTimer()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/api/games/resetTimer", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", newUserCookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            return new GameInfoHelper(newUserCookie, GameId, client, GameCode);
+        }
+
+        public GameInfoHelper RevealCards()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/api/stories/reveal/", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", newUserCookie);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            return new GameInfoHelper(newUserCookie, GameId, client, GameCode);
         }
     }
 }

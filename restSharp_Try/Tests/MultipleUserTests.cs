@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
+using System.Threading;
 
 namespace restSharp_Try.Tests
 {
@@ -82,7 +83,7 @@ namespace restSharp_Try.Tests
             uGame.SkipStory();
             var info = game.StartGame();
             //the Skip Story action is performed by the second user, so it does not pass, even after
-            //proceeding to the next story by "Startgame()" method
+            //theoretically proceeding to the next story by "Startgame()" method
             //"First Story" remains the current story
             Assert.Equal("First Story", info.GetCurrentStoryInfo().title);
         }
@@ -94,11 +95,35 @@ namespace restSharp_Try.Tests
             var player = client.QuickPlayLogin("John");
             var game = player.CreateRoom("Test Room");
             game.CreateStory("First Story");
-            game.CreateStory("Second Story");
+            var info = game.StartGame();
+            var first = info.GetCurrentStoryInfo();
+            var initialTimer = first.GetVotingStart();
             var uGame = game.NewUserQuickPlayLogin("Jack");
             uGame.GetInRoom();
-            game.StartGame();
+            uGame.ResetTimer();
+            var second = info.GetCurrentStoryInfo();
+            var resetTimer = second.GetVotingStart();
+            //see ResetGameTimerTest in GameTests.cs
+            //since the timer cannot be reset by the non-Moderator-user, the 2 variables are the same
+            Assert.True(initialTimer == resetTimer);
+        }
 
+        [Fact]
+        public void CanNewUserRevealCards()  //BUG FOUND !!!
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            game.CreateStory("First Story");
+            game.StartGame();
+            var uGame = game.NewUserQuickPlayLogin("Jack");
+            uGame.GetInRoom();
+            var info = uGame.RevealCards();
+            Assert.False(info.GetVoteInfo().players[1].vote == -1);
+            //if the votes are revealed before the users vote, the vote values become -1
+            //apparently the second user (using his own cookie) can Reveal the cards; this should not happen normally
+            //thus vote values are -1 for both players in the room
+            //test fails because of this
         }
     }
 }

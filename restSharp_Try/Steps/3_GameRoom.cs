@@ -128,7 +128,7 @@ namespace restSharp_Try
         {
             var body = $"gameId={GameId}&";
 
-            var request = new RestRequest("/api/games/resetCurrentStory/", Method.POST);
+            var request = new RestRequest("/api/games/resetTimer", Method.POST);
 
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");

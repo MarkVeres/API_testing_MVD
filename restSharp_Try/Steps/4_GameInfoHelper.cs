@@ -226,5 +226,24 @@ namespace restSharp_Try.Steps
             return new User(GameId, client, cookie, deserializeObject.players[0].id);
             //does not deserialize anything within the players[...] array
         }
+
+        public CurrentStory GetTimerInfo()
+        {
+            var body = $"gameId={GameId}&";
+
+            var request = new RestRequest("/api/play/getPlayInfo", Method.POST);
+
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
+
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+            var content = response.Content;
+            var deserializeObject = Newtonsoft.Json.JsonConvert.DeserializeObject<CurrentStory>(content);
+
+            return deserializeObject;
+        }
     }
 }

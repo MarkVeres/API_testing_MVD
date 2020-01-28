@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 using System.Linq;
+using System.Threading;
 
 namespace restSharp_Try
 {
@@ -159,16 +160,23 @@ namespace restSharp_Try
         }
 
         [Fact]
-        public void ResetGameTimer()
+        public void ResetGameTimer()    //TIMER TESTS ARE NOT POSSIBLE BY API
         {
             var client = new PlanitPockerClient();
             var player = client.QuickPlayLogin("John");
             var game = player.CreateRoom("Test Room");
             game.CreateStory("First Story");
-            game.StartGame();
-            game.Vote();
-            var info  = game.ResetTimer();
-            Assert.Null(info.GetPlayersAndStateInfo().players[0].voteDuration);
+            var info = game.StartGame();
+            var first = info.GetCurrentStoryInfo();
+            var initialTimer = first.GetVotingStart();
+            game.ResetTimer();
+            var second = info.GetCurrentStoryInfo();
+            var resetTimer = second.GetVotingStart();
+            //since voting duration can change based on how fast the test runs, votingDuration CANNOT be used
+            //after reseting the timer, votingStart receives new time and code values (votingStart string will be different)
+            //thus the votingStart parameter is stored in 2 variables
+            //if the timer is actually reset, those 2 variables will be different
+            Assert.False(initialTimer == resetTimer);
         }
 
         [Fact]
