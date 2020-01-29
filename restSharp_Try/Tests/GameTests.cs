@@ -50,7 +50,7 @@ namespace restSharp_Try
         //    game.CreateStory("Test Story");
         //    var info = game.StartGame();
         //    var user = info.GetUserId();  //this does not deserialize used id (id)
-        //                                  //needs fixing
+        //                                  //deserialization does not work in the players[...] array
         //    user.ChangeRoleToObserver();
         //    var sert = user.GetUserInfo();
         //    Assert.Equal(5, sert.players[0].inGameRole);
@@ -118,8 +118,9 @@ namespace restSharp_Try
             var info  = game.StartGame();
             Assert.Equal("Second Story", info.GetCurrentStoryInfo().title);
         }
+
         [Fact]
-        public void ClearVotes()
+        public void ClearVotesBeforeFinishVoting()
         {
             var client = new PlanitPockerClient();
             var player = client.QuickPlayLogin("John");

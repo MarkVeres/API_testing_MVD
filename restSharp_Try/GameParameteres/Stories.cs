@@ -6,7 +6,7 @@ using System.Text;
 
 namespace restSharp_Try
 {    
-    public class Stories  //this one is for story creation & editing; CurrentStory if for during-gameplay stories
+    public class Stories  //this class is for story creation & editing; CurrentStory if for during-gameplay stories
     {
         public Stories[] stories { get; set; }
         public string title { get; set; }

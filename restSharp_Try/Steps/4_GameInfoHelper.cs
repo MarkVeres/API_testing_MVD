@@ -3,8 +3,6 @@ using restSharp_Try.GameParameteres;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Text;
-using System.IO;
 
 namespace restSharp_Try.Steps
 {
@@ -130,7 +128,6 @@ namespace restSharp_Try.Steps
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
-
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
             var response = client.Execute(request);
@@ -149,7 +146,6 @@ namespace restSharp_Try.Steps
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
-
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
             var response = client.Execute(request);
@@ -168,7 +164,6 @@ namespace restSharp_Try.Steps
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
-
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
             var response = client.Execute(request);
@@ -187,7 +182,6 @@ namespace restSharp_Try.Steps
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
-
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
             var response = client.Execute(request);
@@ -207,7 +201,7 @@ namespace restSharp_Try.Steps
             return information;
         }
 
-        public User GetUserId()
+        public User GetUserId()    //method not working; cannot obtain userId
         {
             var body = $"gameId={GameId}&";
 
@@ -216,7 +210,6 @@ namespace restSharp_Try.Steps
             request.AddHeader("Content-Length", body.Length.ToString());
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Cookie", cookie);
-
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
 
             var response = client.Execute(request);

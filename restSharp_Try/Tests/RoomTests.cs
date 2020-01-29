@@ -107,7 +107,7 @@ namespace restSharp_Try.Tests
             var game = player.CreateRoom("Test Room");
             var info = game.DeleteGameRoom();
             var sert = info.GetGamesListInfo();
-            //asserts that the game room that previously had the name "Test Room" does not longer have it's name
+            //asserts that the game room that previously had the name "Test Room" does not longer has its name
             Assert.Null(sert[0].name);
         }
     }

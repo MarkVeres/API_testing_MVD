@@ -61,7 +61,7 @@ namespace restSharp_Try
             return new GameInfoHelper(cookie, GameId, client, GameCode);
         }
 
-        public GameInfoHelper StartGame()    //this is also used for Next Story function as it has the same URL
+        public GameInfoHelper StartGame()   //this is also used for Next Story function as it uses the same request path
         {
             var body = $"gameId={GameId}&";
 
@@ -189,7 +189,7 @@ namespace restSharp_Try
         }
 
         //this can be used to edit any setting after the room has been created
-        //just change parameters
+        //just change method and body parameters
         public GameInfoHelper EditCreatedGameRoom(string roomName, bool tf, int duration)
         {
             var body = $"name={roomName}" +
@@ -252,12 +252,12 @@ namespace restSharp_Try
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
             var response = client.Execute(request);
-            var secondCookie = response.Headers
+            var secondUserCookie = response.Headers
                 .First(h => h.Name == "Set-Cookie")
                 .Value
                 .ToString();
 
-            return new NewUser(GameId, GameCode, client, secondCookie);
+            return new NewUser(GameId, GameCode, client, secondUserCookie);
         }        
     }
 }

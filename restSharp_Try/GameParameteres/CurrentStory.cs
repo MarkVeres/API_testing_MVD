@@ -4,7 +4,7 @@ using System.Text;
 
 namespace restSharp_Try.Steps
 {
-    public class CurrentStory   //this one is for general Story Information, the other "Story" object is for creating stories ONLY
+    public class CurrentStory //this class is for Current Story Information only
     {
         public string title { get; set; }
         public int votingDuration { get; set; } //NEVER use this parameter; because of API test speed, this will always be 0
