@@ -13,7 +13,8 @@ namespace restSharp_Try.Tests
             var client = new PlanitPockerClient();
             var player = client.QuickPlayLogin("John");
             var game = player.CreateRoom("Test Room");
-            Assert.NotNull(game.GameCode);
+            var info = game.GetRoomInfo();
+            Assert.Equal("Test Room", info.title);
         }
 
         [Fact]
@@ -22,7 +23,8 @@ namespace restSharp_Try.Tests
             var client = new PlanitPockerClient();
             var player = client.LoginLogin("ggg@gggmail.com", "password123");
             var game = player.CreateRoom("Test Room");
-            Assert.NotNull(game.GameCode);
+            var info = game.GetRoomInfo();
+            Assert.Equal("Test Room", info.title);
         }
 
         [Fact]
@@ -31,7 +33,8 @@ namespace restSharp_Try.Tests
             var client = new PlanitPockerClient();
             var player = client.SignUpLogin("gg@mail.com", "John", "password123");
             var game = player.CreateRoom("Test Room");
-            Assert.NotNull(game.GameCode);
+            var info = game.GetRoomInfo();
+            Assert.Equal("Test Room", info.title);
         }
     }
 }
