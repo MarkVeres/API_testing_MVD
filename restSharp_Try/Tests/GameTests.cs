@@ -36,11 +36,11 @@ namespace restSharp_Try
             var game = player.CreateRoom("Test Room");
             game.CreateStory("Test Story");
             var info = game.GetRoomInfo();
-            //since there is only 1 user in this room, the moderatorConnected assert can be used
-            //also, it seems that the API response for moderator role check is "6"
             Assert.True(info.moderatorConnected);
         }
 
+        //user Id is needed to change user roles; however it cannot be deserialized
+        //deserialization does not work in the players[...] array, only on elements outside this array
         //[Fact]
         //public void ChangeinGameRole()
         //{
@@ -49,8 +49,7 @@ namespace restSharp_Try
         //    var game = player.CreateRoom("Test Room");
         //    game.CreateStory("Test Story");
         //    var info = game.StartGame();
-        //    var user = info.GetUserId();  //this does not deserialize used id (id)
-        //                                  //deserialization does not work in the players[...] array
+        //    var user = info.GetUserId();
         //    user.ChangeRoleToObserver();
         //    var sert = user.GetUserInfo();
         //    Assert.Equal(5, sert.players[0].inGameRole);
@@ -115,7 +114,7 @@ namespace restSharp_Try
             game.StartGame();
             game.Vote();
             game.FinishVoting();
-            var info  = game.StartGame();
+            var info = game.StartGame();
             Assert.Equal("Second Story", info.GetCurrentStoryInfo().title);
         }
 
@@ -177,7 +176,7 @@ namespace restSharp_Try
             //after reseting the timer, votingStart receives new time and code values (votingStart string will be different)
             //thus the votingStart parameter is stored in 2 variables
             //if the timer is actually reset, those 2 variables will be different
-            Assert.False(initialTimer == resetTimer);
+            Assert.True(initialTimer != resetTimer);
         }
 
         [Fact]
@@ -202,9 +201,8 @@ namespace restSharp_Try
             var game = player.CreateRoom("Test Room");
             var info = game.CreateStory("First Story");
             var story = info.GetStoryEditInfo();
-            story.StoryDetails();
             story.StoriesUpdate("First Story Modified");
-            var edit = story.StoryGet();
+            var edit = story.GetStoryChangeInformation();
             Assert.Equal("First Story Modified", edit.stories[0].title);
         }
 
@@ -240,7 +238,6 @@ namespace restSharp_Try
             Assert.False(sert.storiesCreated);
         }
 
-
         [Fact]
         public void ChangeEstimate()
         {
@@ -253,7 +250,7 @@ namespace restSharp_Try
             var info = game.FinishVoting();
             var story = info.GetStoryEstimateEditInfo();
             story.StoriesUpdate("First Story");
-            var edit = story.StoryGet();
+            var edit = story.GetStoryChangeInformation();
             Assert.Equal(5, edit.stories[0].estimate);
         }
 

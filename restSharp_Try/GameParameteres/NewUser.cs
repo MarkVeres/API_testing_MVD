@@ -142,7 +142,7 @@ namespace restSharp_Try.GameParameteres
             return new GameInfoHelper(secondUserCookie, GameId, client, GameCode);
         }
 
-        public GameInfoHelper FinishVoting()    //estimates are send with this method!!!
+        public GameInfoHelper FinishVoting()    //estimates are sent with this method!
         {
             var body = $"gameId={GameId}&" +
                 $"estimate=3";

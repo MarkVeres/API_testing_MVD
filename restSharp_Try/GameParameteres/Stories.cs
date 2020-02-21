@@ -1,12 +1,9 @@
 ﻿using RestSharp;
 using restSharp_Try.Steps;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace restSharp_Try
 {    
-    public class Stories  //this class is for story creation & editing; CurrentStory if for during-gameplay stories
+    public class Stories  //this class is for story creation & editing; CurrentStory class is for stories during gameplay
     {
         public Stories[] stories { get; set; }
         public string title { get; set; }
@@ -26,21 +23,6 @@ namespace restSharp_Try
             this.id = storyId;
         }
 
-        public void StoryDetails()
-        {
-            var body = $"storyId={id}&" +
-                $"gameId={GameId}";
-
-            var request = new RestRequest("/api/stories/details/", Method.POST);
-
-            request.AddHeader("Content-Length", body.Length.ToString());
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Cookie", cookie);
-            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
-        }
-
         public void StoriesUpdate(string title)
         {
             var body = $"storyId={id}&" +
@@ -57,7 +39,7 @@ namespace restSharp_Try
             var response = client.Execute(request);
         }
 
-        public Stories StoryGet()
+        public Stories GetStoryChangeInformation()  //used only for change Estimate and change Story Name tests
         {
             var body = $"gameId={GameId}&" +
                 $"page=1&" +

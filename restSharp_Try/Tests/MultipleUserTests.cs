@@ -17,6 +17,19 @@ namespace restSharp_Try.Tests
             game.CreateStory("Test Story");
             var uGame = game.NewUserQuickPlayLogin("Jack");
             uGame.GetInGameRoom();
+            var info = game.StartGame();
+            Assert.Equal("Jack", info.GetPlayersAndStateInfo().players[1].name);
+        }
+
+        [Fact]
+        public void CanSeveralNewUsersConnectToGame()
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            game.CreateStory("Test Story");
+            var uGame = game.NewUserQuickPlayLogin("Jack");
+            uGame.GetInGameRoom();
             var sGame = game.NewUserQuickPlayLogin("Jenny");
             sGame.GetInGameRoom();
             var info = game.StartGame();
@@ -63,8 +76,7 @@ namespace restSharp_Try.Tests
             uGame.GetInGameRoom();
             game.StartGame();
             var info = uGame.Vote();
-            //test working as it should
-            //extra assert to make sure that the vote is not registered for User John
+            //extra assert to make sure that the vote is not registered for User John (players[0])
             //Assert.False(info.GetVoteInfo().players[0].voted);
             Assert.True(info.GetVoteInfo().players[1].voted);
         }
@@ -82,9 +94,6 @@ namespace restSharp_Try.Tests
             game.StartGame();
             uGame.SkipStory();
             var info = game.StartGame();
-            //the Skip Story action is performed by the second user, so it does not pass, even after
-            //theoretically proceeding to the next story by "Startgame()" method
-            //"First Story" remains the current story
             Assert.Equal("First Story", info.GetCurrentStoryInfo().title);
         }
 
@@ -119,13 +128,11 @@ namespace restSharp_Try.Tests
             var uGame = game.NewUserQuickPlayLogin("Jack");
             uGame.GetInGameRoom();
             var info = uGame.RevealCards();
-            //Assert.True(info.GetVoteInfo().players[1].vote == -1);   //wrong assert that passes; for refactoring purposes
-            Assert.False(info.GetVoteInfo().players[1].vote == -1);
+            Assert.Null(info.GetVoteInfo().players[1].vote);
 
             //if the votes are revealed before the users vote, the vote values become -1
+            //if the cards are not revealed, the "vote" parameter should be null, however Test Explorer shows vote = -1
             //apparently the second user (using his own cookie) can Reveal the cards; this should not happen normally
-            //thus vote values are -1 for both players in the room
-            //test fails because of this
         }
 
         [Fact]
@@ -163,7 +170,7 @@ namespace restSharp_Try.Tests
         }
 
         [Fact]
-        public void CanNewUserFinishTheGame()
+        public void CanNewUserEndTheVotingProcess()
         {
             var client = new PlanitPockerClient();
             var player = client.QuickPlayLogin("John");
@@ -187,9 +194,8 @@ namespace restSharp_Try.Tests
             var uGame = game.NewUserQuickPlayLogin("Jack");
             uGame.GetInGameRoom();
             var story = uGame.GetStoryEditInfo();
-            story.StoryDetails();
             story.StoriesUpdate("First Story Modified");
-            var edit = story.StoryGet();
+            var edit = story.GetStoryChangeInformation();
             Assert.Equal("First Story", edit.stories[0].title);
         }
     }

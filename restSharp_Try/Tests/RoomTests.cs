@@ -9,10 +9,10 @@ namespace restSharp_Try.Tests
     public class RoomTests
     {
         //these tests check for functions that are not default to room creation
-        //more precise: they check if the available options regarding room setting are working
+        //more precise: they check if the available options regarding room settings are available and working
 
         [Fact]
-        public void CreateRoomWithoutStories()
+        public void CreateRoomThatCannotHaveStories()
         {
             var client = new PlanitPockerClient();
             var player = client.QuickPlayLogin("John");
