@@ -41,19 +41,19 @@ namespace restSharp_Try
 
         //user Id is needed to change user roles; however it cannot be deserialized
         //deserialization does not work in the players[...] array, only on elements outside this array
-        //[Fact]
-        //public void ChangeinGameRole()
-        //{
-        //    var client = new PlanitPockerClient();
-        //    var player = client.QuickPlayLogin("John");
-        //    var game = player.CreateRoom("Test Room");
-        //    game.CreateStory("Test Story");
-        //    var info = game.StartGame();
-        //    var user = info.GetUserId();
-        //    user.ChangeRoleToObserver();
-        //    var sert = user.GetUserInfo();
-        //    Assert.Equal(5, sert.players[0].inGameRole);
-        //}
+        [Fact]
+        public void ChangeinGameRole()
+        {
+            var client = new PlanitPockerClient();
+            var player = client.QuickPlayLogin("John");
+            var game = player.CreateRoom("Test Room");
+            game.CreateStory("Test Story");
+            var info = game.StartGame();
+            var user = info.GetUserId();
+            user.ChangeRoleToObserver();
+            var sert = user.GetUserInfo();
+            Assert.Equal(5, sert.players[0].inGameRole);
+        }
 
         [Fact]
         public void CreateMultipleStories()

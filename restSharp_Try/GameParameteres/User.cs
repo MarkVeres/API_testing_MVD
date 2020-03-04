@@ -12,34 +12,35 @@ namespace restSharp_Try.Steps
         public bool closed { get; set; }      //this is for Finish voting
         public int? vote { get; set; }       //this is for the value of the vote
         public int id { get; set; }    //this is the player's ID
+        public int inGameRole { get; set; }
 
         public string cookie;
         public int GameId;
-        public int Id { get; set; }
         private RestClient client;
 
         public User(int gameId, RestClient client, string cookie, int id)
         {
-            this.Id = id;
+            this.id = id;
             this.cookie = cookie;
             this.GameId = gameId;
             this.client = client;
         }
 
-        //public void ChangeRoleToObserver()  //see ChangeInGameRole Test in GameTests
-        //{
-        //    var body = $"gameId={GameId}&" +
-        //        $"userId={Id}&" +
-        //        $"role=1";
+        public void ChangeRoleToObserver()
+        {
+            var body = $"gameId={GameId}&" +
+                $"userId={id}&" +
+                $"role=1";
 
-        //    var request = new RestRequest("/api/games/updaterole", Method.POST);
+            var request = new RestRequest("/api/games/updaterole", Method.POST);
 
-        //    request.AddHeader("Content-Length", body.Length.ToString());
-        //    request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-        //    request.AddHeader("Cookie", cookie);
+            request.AddHeader("Content-Length", body.Length.ToString());
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Cookie", cookie);
 
-        //    request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
-        //}
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
+            var response = client.Execute(request);
+        }
 
         public User GetUserInfo()
         {
